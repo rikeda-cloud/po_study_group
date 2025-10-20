@@ -1,8 +1,7 @@
 import { processApiResponse } from './index';
-import { ApiResponse, User, Product } from './api-spec';
+import { User, Product } from './api-spec';
 
 describe('processApiResponse', () => {
-
   // 正常なユーザーデータが返るべきケース
   test('should return a valid user for id 1', async () => {
     const result = await processApiResponse(1);

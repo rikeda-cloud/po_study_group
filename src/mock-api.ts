@@ -1,5 +1,6 @@
 // バックエンドの擬似APIです。不完全なレスポンスを返すことがあります。
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function mockFetch(id: number): Promise<any> {
   console.log(`Fetching data for id: ${id}`);
   switch (id) {

@@ -18,11 +18,11 @@ export interface Product {
 // APIレスポンスの型。成功時と失敗時で型が異なります。
 export type ApiResponse =
   | {
-    status: 'success';
-    data: User | Product;
-  }
+      status: 'success';
+      data: User | Product;
+    }
   | {
-    status: 'error';
-    errorCode: string;
-    message: string;
-  };
+      status: 'error';
+      errorCode: string;
+      message: string;
+    };
