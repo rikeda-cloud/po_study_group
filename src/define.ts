@@ -12,8 +12,8 @@ export interface ResponseData {
 
 // APIエンドポイントがレスポンスするユーザー型
 export interface RawUser {
-  user_id: number | string;
-  friend_ids: (number | string)[] | null;
+  user_id: number | string; // INFO string型の場合、数値に変換可能な文字列
+  friend_ids: (number | string)[] | null; // INFO string型の場合、数値に変換可能な文字列
   birthday: string | number | null; // INFO YYYY-MM-DD or YYYY/MM/DD or UnixTimeStamp or null
   is_active: boolean | 1 | 0 | null;
 }
