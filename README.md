@@ -56,6 +56,20 @@ APIからのレスポンスを安全に処理し、定義された型に整形�
 processApiResponse関数は疑似APIから返された整形前レスポンス(`RawResponseData`型)を整形し、整形後レスポンス(`ResponseData`型)に変換します。
 型情報は `src/define.ts`内に定義されています。
 
+### ディレクトリ構成
+
+```
+.
+├───docs/
+│   └───api.yaml                  # OpenAPI形式のAPI設計書
+└───src/
+    ├───data.ts                    # 整形関数に渡されるデータと、予期される整形後データ
+    ├───define.ts                  # 型定義
+    ├───mockFetch.ts               # 疑似APIをfetchする関数
+    ├───processApiResponse.test.ts # 事前用意したテスト(data.ts内の情報を使用してテストを実行する)
+    └───processApiResponse.ts      # 実装・改善対象のレスポンス整形関数
+```
+
 - ResponseDataの`status`は、整形前レスポンスのステータスコードが正常系の場合は`success`, エラー系の場合は`error`となります。
 - ResponseDataの`data`は、整形前レスポンスのステータスコードが正常系の場合は整形後ユーザー情報(`User`型)、エラー系の場合は整形前レスポンスのエラーメッセージとなります。
 - 整形後ユーザー情報(`User`型)は下記の規則に則って整形されます。
