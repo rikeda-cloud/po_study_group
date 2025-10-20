@@ -34,11 +34,6 @@ paths:
                         - type: number
                         - type: string
                       description: "ユーザーID"
-                    user_name:
-                      oneOf:
-                        - type: string
-                        - type: number
-                      description: "ユーザー名。全て数字の場合は数値型もあり得る"
                     friend_ids:
                       type: array
                       items:
