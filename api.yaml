@@ -1,0 +1,54 @@
+openapi: 3.0.3
+
+info: 
+  title: Users API
+  description: |
+    UsersサービスのAPIを提供。
+  version: 1.0.0
+
+servers:
+  - url: https://user.com
+
+paths:
+  /users:
+    get:
+      summary: "クエリパラメータでユーザーを検索"
+      tags:
+        - Users
+      parameters:
+      - name: query
+        in: query
+        description: "Number"
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: "ユーザー情報の取得に成功"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: integer
+                  username:
+                    type: string
+                  avatarPath:
+                    type: string
+                    description: "アバター画像のパス"
+                    example: "/uploads/avatars/12345.png"
+        "400":
+          description: "クエリパラメータの数値が不正"
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Bad Query String."
+        "404":
+          description: "検索条件に合うユーザーが一人も見つからなかった"
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "User Not Found."
