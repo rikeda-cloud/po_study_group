@@ -1,4 +1,4 @@
-import { processApiResponse } from './index';
+import processApiResponse from './processApiResponse';
 import { User, Product } from './api-spec';
 
 describe('processApiResponse', () => {

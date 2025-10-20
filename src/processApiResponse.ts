@@ -8,7 +8,9 @@ import { mockFetch } from './mock-api';
  * @param id 取得するデータのID
  * @returns 整形後のAPIレスポンス
  */
-export async function processApiResponse(id: number): Promise<ApiResponse> {
+export default async function processApiResponse(
+  id: number,
+): Promise<ApiResponse> {
   const response = await mockFetch(id);
 
   // TODO: レスポンスを検証し、ApiResponse型に整形してください。
