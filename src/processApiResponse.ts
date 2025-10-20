@@ -1,4 +1,4 @@
-import { ResponseData } from "./define";
+import { ResponseData } from './define';
 import mockFetch from './mockFetch';
 
 /**
@@ -7,11 +7,13 @@ import mockFetch from './mockFetch';
  * @param id 取得するデータのID
  * @returns 整形後のレスポンスデータ
  */
-export default async function processApiResponse(id: number): Promise<ResponseData> {
-  const response = await mockFetch(id);
+export default async function processApiResponse(
+  id: number,
+): Promise<ResponseData> {
+  await mockFetch(id);
 
   return {
     status: 'error',
-    data: "処理を完成させ、テストを通るようにしてください",
+    data: '処理を完成させ、テストを通るようにしてください',
   };
 }
