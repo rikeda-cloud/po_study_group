@@ -6,9 +6,6 @@ info:
     UsersサービスのAPIを提供。
   version: 1.0.0
 
-servers:
-  - url: https://user.com
-
 paths:
   /users:
     get:
@@ -28,16 +25,42 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  userId:
-                    type: integer
-                  username:
-                    type: string
-                  avatarPath:
-                    type: string
-                    description: "アバター画像のパス"
-                    example: "/uploads/avatars/12345.png"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      oneOf:
+                        - type: number
+                        - type: string
+                      description: "ユーザーID"
+                    user_name:
+                      oneOf:
+                        - type: string
+                        - type: number
+                      description: "ユーザー名。全て数字の場合は数値型もあり得る"
+                    friend_ids:
+                      type: array
+                      items:
+                        oneOf:
+                          - type: number
+                          - type: string
+                        nullable: true
+                      description: "友達のIDリスト。(文字列と数値の混合配列 or NULL)"
+                    birthday:
+                      oneOf:
+                        - type: string
+                          description: "YYYY-MM-DD形式、または、YYY/MM/DD形式"
+                        - type: integer
+                          description: "Unix timestamp"
+                      nullable: true
+                      description: "生年月日(文字列 or UnixTimestamp or NULL)"
+                    is_active:
+                      oneOf:
+                        - type: boolean
+                        - type: number
+                      nullable: true
+                      description: "アカウントがアクティブか(boolean or 1 or 0 or NULL)"
         "400":
           description: "クエリパラメータの数値が不正"
           content:
