@@ -13,9 +13,9 @@ export interface ResponseData {
 // APIエンドポイントがレスポンスするユーザー型
 export interface RawUser {
   user_id: number | string;
-  friend_ids?: (number | string)[];
-  birthday?: string | number; // INFO YYYY-MM-DD or YYYY/MM/DD or UnixTimeStamp
-  is_active?: boolean | 1 | 0;
+  friend_ids: (number | string)[] | null;
+  birthday: string | number | null; // INFO YYYY-MM-DD or YYYY/MM/DD or UnixTimeStamp or null
+  is_active: boolean | 1 | 0 | null;
 }
 
 // 整形後のユーザー型
