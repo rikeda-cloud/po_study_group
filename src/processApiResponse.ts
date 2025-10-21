@@ -54,7 +54,7 @@ function convertRawBirthdayToBirthday(
   if (typeof rawBirthday === 'number') {
     return new Date(rawBirthday * 1000);
   } else if (typeof rawBirthday === 'string') {
-    return new Date(rawBirthday);
+    return new Date(rawBirthday.replace(/\//g, "-"));
   }
 
   // rawBirthdayが 数値 or 文字列 以外の場合は現在時刻のDateを返す
