@@ -6,8 +6,8 @@ export default function Home() {
     // INFO ここに情報を追加し、Stepを増やせる
     {
       href: '/step1',
-      primary: 'Step 1: クライアントサイドで完結する買い物カート',
-      secondary: 'フロントエンドの改修のみで作成可能なCookieを用いた買い物カートを作成しよう'
+      primary: 'Step 1: ClientSessionで完結する買い物カート',
+      secondary: 'ClientSessionを実現するためのAPIサーバを立て、Cookieを用いた買い物カートを作成しよう'
     }
   ];
 
