@@ -3,7 +3,6 @@ import Link from 'next/link';
 
 export default function Home() {
   const steps = [
-    // INFO ここに情報を追加し、Stepを増やせる
     {
       href: '/step1',
       primary: 'Step 1: ClientSessionで完結する買い物カート',
@@ -13,6 +12,11 @@ export default function Home() {
       href: '/step2',
       primary: 'Step 2: ServerSessionで実現する買い物カート',
       secondary: 'ServerSessionを実現するためのAPIサーバを立て、ログイン機能とSessionを用いた買い物カートを作成しよう'
+    },
+    {
+      href: '/step3',
+      primary: 'Step 3: JWTで実現する買い物カート',
+      secondary: 'JWT認証を実現するための認証サーバとAPIサーバを立て、ログイン機能とSessionを用いた買い物カートを作成しよう'
     }
   ];
 
