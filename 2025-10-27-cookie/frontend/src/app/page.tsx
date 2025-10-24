@@ -8,6 +8,11 @@ export default function Home() {
       href: '/step1',
       primary: 'Step 1: ClientSessionで完結する買い物カート',
       secondary: 'ClientSessionを実現するためのAPIサーバを立て、Cookieを用いた買い物カートを作成しよう'
+    },
+    {
+      href: '/step2',
+      primary: 'Step 2: ServerSessionで実現する買い物カート',
+      secondary: 'ServerSessionを実現するためのAPIサーバを立て、ログイン機能とSessionを用いた買い物カートを作成しよう'
     }
   ];
 
