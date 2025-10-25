@@ -31,10 +31,16 @@ export default async function processApiResponse(
   const rawUsers = res.data as RawUser[];
   return {
     status: status,
-    data: rawUsers
-      .filter((e) => e.birthday && e.is_active)
-      .map((e) => convertToUser(e as ActiveRawUser)),
+    data: rawUsers.filter(isActiveRawUser).map(convertToUser),
   };
+}
+
+function isActiveRawUser(e: RawUser): e is ActiveRawUser {
+  return (
+    e.birthday !== null &&
+    e.birthday !== undefined &&
+    (e.is_active === true || e.is_active === 1)
+  );
 }
 
 const convertToUser = (data: ActiveRawUser): User => {
