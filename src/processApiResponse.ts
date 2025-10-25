@@ -28,40 +28,51 @@ export default async function processApiResponse(
       data: res.data as string,
     };
 
-  const rawUers = res.data as RawUser[];
+  const rawUsers = res.data as RawUser[];
   return {
     status: status,
-    data: rawUers
+    data: rawUsers
       .filter((e) => e.birthday && e.is_active)
       .map((e) => convertToUser(e as ActiveRawUser)),
   };
 }
 
 const convertToUser = (data: ActiveRawUser): User => {
+  const convertedUserId =
+    typeof data.user_id === 'string'
+      ? safeToNumber(data.user_id)
+      : data.user_id;
+
+  const convertedFriendIds =
+    data.friend_ids === null ? [] : data.friend_ids.map((e) => safeToNumber(e));
+
   return {
-    user_id:
-      typeof data.user_id === 'string' ? Number(data.user_id) : data.user_id,
-    friend_ids: convertToNumberArray(data.friend_ids),
+    user_id: convertedUserId,
+    friend_ids: convertedFriendIds,
     birthday: convertToDate(data.birthday),
   };
+};
+
+const safeToNumber = (value: string | number): number => {
+  const num = typeof value === 'string' ? Number(value) : value;
+  if (isNaN(num)) {
+    throw new Error(`値が数値に変換できません: ${value}`);
+  }
+  return num;
 };
 
 /**
  * '/'のままだと国際標準時、'-'だと日本時間で変換されるので、'-'に統一する
  * number型の場合、引数は秒単位。new Date()はミリ秒単位での引数を要求しているため、*1000してから渡す
+ * 変換失敗時はエラーを投げる
  */
 const convertToDate = (birthday: string | number): Date => {
-  return typeof birthday === 'string'
-    ? new Date(birthday.replace(/\//g, '-'))
-    : new Date(birthday * 1000);
-};
-
-const convertToNumberArray = (
-  friend_ids: (number | string)[] | null,
-): number[] => {
-  if (friend_ids === null) return [];
-
-  return friend_ids.map((e) => {
-    return typeof e === 'string' ? Number(e) : e;
-  });
+  const date =
+    typeof birthday === 'string'
+      ? new Date(birthday.replace(/\//g, '-'))
+      : new Date(birthday * 1000);
+  if (isNaN(date.getTime())) {
+    throw new Error(`値が日付に変換できません: ${birthday}`);
+  }
+  return date;
 };
