@@ -1,0 +1,124 @@
+openapi: 3.0.3
+
+info: 
+  title: Cookie & Session Step2
+  description: |
+    Cookie & Session勉強会
+  version: 1.0.0
+
+paths:
+  /api/step2/auth/login:
+    post:
+      summary: "ユーザー情報を用いてログイン"
+      tags:
+        - Auth
+      requestBody:
+        description: ユーザー情報
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+            example:
+              "userName": "rikeda"
+      responses:
+        "200":
+          description: "ログイン成功"
+          headers:
+            Set-Cookie:
+              description: SessionID
+              schema:
+                type: string
+                example: "session=abcde"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 1}, {"id": 2, "quantity": 3}]
+  /api/step2/auth/logout:
+    post:
+      summary: "ログアウト"
+      tags:
+        - Auth
+      responses:
+        "200":
+          description: "ログアウト成功"
+          headers:
+            Set-Cookie:
+              description: SessionIDの削除
+              schema:
+                type: string
+                example: "session=; HttpOnly; Max-Age=0"
+  /api/step2/items:
+    get:
+      summary: "カート内の情報を取得"
+      tags:
+        - Cart
+      parameters:
+        - in: cookie
+          name: session
+          schema:
+            type: string
+            example: "session=abcde"
+      responses:
+        "200":
+          description: "カート情報の取得に成功"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 1}, {"id": 2, "quantity": 3}]
+    post:
+      summary: "商品を追加"
+      tags:
+        - Cart
+      parameters:
+        - in: cookie
+          name: session
+          schema:
+            type: string
+            example: "session=abcde"
+      requestBody:
+        description: 商品情報
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item:
+                  type: integer
+            example:
+              "id": 1
+      responses:
+        "201":
+          description: "商品の追加が成功"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 2}, {"id": 2, "quantity": 3}]
+  /api/step2/items/{itemId}:
+    delete:
+      summary: "パスに含まれる商品を削除"
+      tags:
+        - Cart
+      parameters:
+        - in: cookie
+          name: session
+          schema:
+            type: string
+            example: "session=abcde"
+        - in: path
+          required: true
+          name: itemId
+          schema:
+            type: integer
+            example: 2
+      responses:
+        "200":
+          description: "商品の削除成功"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 1}]

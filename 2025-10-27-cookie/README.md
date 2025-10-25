@@ -36,11 +36,11 @@
 `/step2` ページではServerSessionによるログイン機能・SessionIDによる買い物カート情報の受け渡し機能を実装します。
 
 1. APIサーバを作成し、5つのエンドポイントを作成してください
-    1. `/login` ログインしたことのあるユーザーの場合はSessionIDを更新、無いユーザーの場合はメモリ上にユーザー名・SessionID・カート情報を新規作成してください。CookieにSessionIDを追加し、レスポンスを返してください
-    2. `/logout` メモリ上のSession情報を削除し、Cookie内のSessionIDを削除してください
-    3. `/items` SessionIDに紐付いたカート情報をレスポンスで返してください
-    4. `/items/add` リクエストボディに含まれる商品をAPIサーバのメモリ上に追加してください
-    5. `/items/delete` クエリストリングに指定された商品をAPIサーバのメモリ上から削除してください
+    1. `/api/step2/auth/login (POST)` ログインしたことのあるユーザーの場合はSessionIDを更新、無いユーザーの場合はメモリ上にユーザー名・SessionID・カート情報を新規作成してください。CookieにSessionIDを追加し、レスポンスを返してください
+    2. `/api/step2/auth/logout (POST)` メモリ上のSession情報を削除し、Cookie内のSessionIDを削除してください
+    3. `/api/step2/items (GET)` SessionIDに紐付いたカート情報を取得
+    4. `/api/step2/items (POST)` リクエストボディに含まれる商品をAPIサーバのメモリ上に追加
+    5. `/api/step2/items/{itemId} (DELETE)` クエリストリングに指定された商品をAPIサーバのメモリ上から削除
 2. フロントエンドを改修し、APIサーバを叩くことによって、ログイン・ログアウト・カートへの商品の追加・削除を行うように変更してください
 3. useStateの初期化時に使用する情報としてSessionIDに紐付いたカート情報を使用してください
 4. ブラウザをリロードしてもカートの情報は保持されることを確認してください
