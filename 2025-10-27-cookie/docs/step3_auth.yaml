@@ -1,0 +1,66 @@
+openapi: 3.0.3
+
+info: 
+  title: Cookie & Session Step2
+  description: |
+    Cookie & Session勉強会
+  version: 1.0.0
+
+paths:
+  /api/step3/auth/login:
+    post:
+      summary: "ユーザー情報を用いてログイン"
+      tags:
+        - Auth
+      requestBody:
+        description: ユーザー情報
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+            example:
+              "userName": "rikeda"
+      responses:
+        "200":
+          description: "ログイン成功"
+          headers:
+            Set-Cookie:
+              description: アクセストークン(JWT形式)
+              schema:
+                type: string
+                example: "access_token=abc.def.ghi; HttpOnly"
+  /api/step3/auth/logout:
+    post:
+      summary: "ログアウト"
+      tags:
+        - Auth
+      responses:
+        "200":
+          description: "ログアウト成功"
+          headers:
+            Set-Cookie:
+              description: アクセストークンの削除
+              schema:
+                type: string
+                example: "access_token=; HttpOnly; Max-Age=0"
+  /api/step3/auth/keys:
+    get:
+      summary: "アクセストークン検証用の公開鍵のリストを取得"
+      tags: 
+        - Auth
+      responses:
+        "200":
+          description: "公開鍵リストの取得成功"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              example:
+                - "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr...IDAQAB\n-----END PUBLIC KEY-----"
+                - "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl...IDAQAB\n-----END PUBLIC KEY-----"

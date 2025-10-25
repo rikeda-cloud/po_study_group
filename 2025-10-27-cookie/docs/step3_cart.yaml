@@ -1,0 +1,80 @@
+openapi: 3.0.3
+
+info: 
+  title: Cookie & Session Step3(Cart)
+  description: |
+    Cookie & Session勉強会
+  version: 1.0.0
+
+paths:
+  /api/step3/items:
+    get:
+      summary: "カート内の情報を取得"
+      tags:
+        - Cart
+      parameters:
+        - in: cookie
+          name: access_token
+          schema:
+            type: string
+            example: "access_token=abc.def.ghi"
+      responses:
+        "200":
+          description: "カート情報の取得に成功"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 1}, {"id": 2, "quantity": 3}]
+    post:
+      summary: "商品を追加"
+      tags:
+        - Cart
+      parameters:
+        - in: cookie
+          name: access_token
+          schema:
+            type: string
+            example: "access_token=abc.def.ghi"
+      requestBody:
+        description: 商品情報
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                item:
+                  type: integer
+            example:
+              "id": 1
+      responses:
+        "201":
+          description: "商品の追加が成功"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 2}, {"id": 2, "quantity": 3}]
+  /api/step3/items/{itemId}:
+    delete:
+      summary: "パスに含まれる商品を削除"
+      tags:
+        - Cart
+      parameters:
+        - in: cookie
+          name: access_token
+          schema:
+            type: string
+            example: "access_token=abc.def.ghi"
+        - in: path
+          required: true
+          name: itemId
+          schema:
+            type: integer
+            example: 2
+      responses:
+        "200":
+          description: "商品の削除成功"
+          content:
+            application/json:
+              example:
+                "cart": [{"id": 1, "quantity": 1}]
