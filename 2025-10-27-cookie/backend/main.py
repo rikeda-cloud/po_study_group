@@ -3,6 +3,7 @@ from fastapi import FastAPI, Cookie
 from fastapi.responses import JSONResponse
 import json
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 
 class AddItemId(BaseModel):
@@ -12,19 +13,40 @@ class AddItemId(BaseModel):
 app = FastAPI()
 
 
+origins = [
+    "http://localhost:3000",  # Frontend origin
+    "http://localhost:8000",  # Backend origin (if needed for testing)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 @app.get("/api/step1/items")
 def list_items(cart: Union[str, None] = Cookie(default=None)):
-    content = [] if cart is None else json.loads(cart)
+    content = []
+    if cart:
+        try:
+            content = json.loads(cart)
+        except json.JSONDecodeError:
+            content = []
     response = JSONResponse(content=content)
     return response
 
 
 @app.post("/api/step1/items")
-def add_item(add_item_id: AddItemId, cart: Union[str, None] = Cookie(None)):
-    if cart is None:
-        cur_cart = []
-    else:
-        cur_cart: list[dict] = json.loads(cart)
+def add_item(add_item_id: AddItemId, cart: Union[str, None] = Cookie(default=None)):
+    cur_cart = []
+    if cart:
+        try:
+            cur_cart = json.loads(cart)
+        except json.JSONDecodeError:
+            cur_cart = []
 
     id_found = False
     for i, item in enumerate(cur_cart):
@@ -43,10 +65,12 @@ def add_item(add_item_id: AddItemId, cart: Union[str, None] = Cookie(None)):
 
 @app.delete("/api/step1/items/{itemId}")
 def delete_item(itemId: int, cart: Union[str, None] = Cookie(default=None)):
-    if cart is None:
-        cur_cart = []
-    else:
-        cur_cart = json.loads(cart)
+    cur_cart = []
+    if cart:
+        try:
+            cur_cart = json.loads(cart)
+        except json.JSONDecodeError:
+            cur_cart = []
 
     for i, item in enumerate(cur_cart):
         if item.get("id") == itemId:
