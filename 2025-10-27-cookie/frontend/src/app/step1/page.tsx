@@ -5,6 +5,7 @@ import ProductList from '@/components/ProductList';
 import ShoppingCart from '@/components/ShoppingCart';
 import { Container } from '@mui/material';
 import { Product, CartItem } from '@/components/types';
+import { prepro } from '@/utils/cart';
 
 export default function Step1() {
   // INFO 現在はuseStateによってカート内の情報を管理している。そのため、リロードするとカート内の情報が消える
@@ -12,19 +13,39 @@ export default function Step1() {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (product: Product) => {
-    setCart(prevCart => {
-      // すでにカート内に同じ商品があるなら個数を+1し、無いなら、商品を個数1で追加
-      const existingItem = prevCart.find(item => item.id === product.id);
-      if (existingItem) {
-        return prevCart.map(item => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
-      }
-      return [...prevCart, { ...product, quantity: 1 }];
-    });
+    fetch("http://localhost:8000/api/step1/items", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({ id: product.id })
+    })
+      .then(response => response.json())
+      .then(data => {
+        setCart(prepro(data));
+        console.log(data); // サーバーからの応答を表示
+      })
+      .catch(error => {
+        console.error('エラー:', error); // エラーハンドリング
+      });
   };
 
   const removeFromCart = (productId: number) => {
-    // 引数に指定されたproductIdを削除
-    setCart(prevCart => prevCart.filter(item => item.id !== productId));
+    fetch(`http://localhost:8000/api/step1/items/${productId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        setCart(prepro(data));
+        console.log(data); // サーバーからの応答を表示
+      })
+      .catch(error => {
+        console.error('エラー:', error); // エラーハンドリング
+      });
   };
 
   return (
