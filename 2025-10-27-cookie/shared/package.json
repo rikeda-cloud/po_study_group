@@ -1,0 +1,11 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.7.0"
+  },
+  "scripts": {
+    "type-gen": "bash ../shared/open-api-generator.sh"
+  }
+}
