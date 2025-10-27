@@ -7,14 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-const products: Product[] = [
-  { id: 1, name: 'りんご', price: 500 },
-  { id: 2, name: 'バナナ', price: 300 },
-  { id: 3, name: 'オレンジ', price: 100 },
-  { id: 4, name: 'グレープ', price: 1000 },
-  { id: 5, name: 'パイナップル', price: 1500 },
-  { id: 6, name: 'メロン', price: 3000 },
-];
+import { products } from '@/utils/cart';
 
 interface ProductListProps {
   addToCart: (product: Product) => void;
