@@ -55,6 +55,7 @@ app.post("/api/step1/items", async (c) => {
   }
 
   c.header("Set-Cookie", cartToCookie(cart));
+  console.log(cart); //DEBUG
   return c.json({ cart: cart }, 201);
 });
 
@@ -67,6 +68,7 @@ app.delete("/api/step1/items/:itemId", (c) => {
   const newCart = cart.filter((e) => e.id !== itemId);
 
   c.header("Set-Cookie", cartToCookie(newCart));
+  console.log(newCart); //DEBUG
   return c.json({ cart: newCart }, 200);
 });
 
