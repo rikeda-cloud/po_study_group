@@ -1,17 +1,28 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import type { ApiStep1ItemsPostRequest } from "../../shared/api-types/models/ApiStep1ItemsPostRequest";
 
 type CartItem = { id: number; quantity: number };
 
 const app = new Hono();
 
+app.use(
+  "/api/*",
+  cors({
+    origin: "http://localhost:3000", // フロントのURL
+    credentials: true, // これでAccess-Control-Allow-Credentials: trueが付与される
+  })
+);
+
 // カート情報をCookieから取得
 function parseCartCookie(cookie: string | undefined): CartItem[] {
   if (!cookie) return [];
+
   try {
-    const value = cookie.split("cart=")[1];
-    return value ? JSON.parse(value) : [];
+    const match = cookie.match(/cart=([^;]+)/);
+    return match ? JSON.parse(match[1]) : [];
   } catch {
+    console.error("JSON.parse error");
     return [];
   }
 }
@@ -37,8 +48,11 @@ app.post("/api/step1/items", async (c) => {
   if (!body.item) return c.json({ error: "item is required" }, 400);
 
   const idx = cart.findIndex((e) => e.id === body.item);
-  if (idx >= 0) cart[idx].quantity++;
-  else cart.push({ id: body.item, quantity: 1 });
+  if (idx >= 0) {
+    cart[idx].quantity++;
+  } else {
+    cart.push({ id: body.item, quantity: 1 });
+  }
 
   c.header("Set-Cookie", cartToCookie(cart));
   return c.json({ cart: cart }, 201);
