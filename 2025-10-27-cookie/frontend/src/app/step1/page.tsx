@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import ProductList from "@/components/ProductList";
+import { useEffect, useState } from "react";
+import ProductList, { products } from "@/components/ProductList";
 import ShoppingCart from "@/components/ShoppingCart";
 import { Container } from "@mui/material";
 import { Product, CartItem } from "@/components/types";
@@ -10,6 +10,29 @@ export default function Step1() {
   // INFO 現在はuseStateによってカート内の情報を管理している。そのため、リロードするとカート内の情報が消える
   // INFO useStateでからの配列を用いて初期化しているが、Cookieの情報を初期化時に使用することで...
   const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      const res = await fetch("http://localhost:8989/api/step1/items", {
+        credentials: "include",
+      });
+
+      if (!res.ok) return;
+      const data = await res.json();
+
+      const mergedCart = data.cart.map((cartItem: CartItem) => {
+        const product = products.find((p) => p.id === cartItem.id);
+        return {
+          ...cartItem,
+          name: product?.name ?? "不明",
+          price: product?.price ?? 0,
+        };
+      });
+      setCart(mergedCart);
+    };
+
+    fetchCart();
+  }, []);
 
   const addToCart = async (product: Product) => {
     const res = await fetch("http://localhost:8989/api/step1/items", {
