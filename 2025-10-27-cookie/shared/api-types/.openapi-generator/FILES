@@ -1,0 +1,7 @@
+.openapi-generator-ignore
+apis/CartApi.ts
+apis/index.ts
+index.ts
+models/ApiStep1ItemsPostRequest.ts
+models/index.ts
+runtime.ts

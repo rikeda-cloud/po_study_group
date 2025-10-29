@@ -1,6 +1,6 @@
 openapi: 3.0.3
 
-info: 
+info:
   title: Cookie & Session Step1
   description: |
     Cookie & Session勉強会
@@ -24,7 +24,7 @@ paths:
           content:
             application/json:
               example:
-                "cart": [{"id": 1, "quantity": 1}, {"id": 2, "quantity": 3}]
+                "cart": [{ "id": 1, "quantity": 1 }, { "id": 2, "quantity": 3 }]
     post:
       summary: "リクエストボディに含まれる商品をCookieに追加"
       tags:
@@ -46,7 +46,7 @@ paths:
                 item:
                   type: integer
             example:
-              "id": 1
+              "item": 1
       responses:
         "201":
           description: "商品の追加が成功"
@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               example:
-                "cart": [{"id": 1, "quantity": 2}, {"id": 2, "quantity": 3}]
+                "cart": [{ "id": 1, "quantity": 2 }, { "id": 2, "quantity": 3 }]
   /api/step1/items/{itemId}:
     delete:
       summary: "パスに含まれる商品をCookieから削除"
@@ -89,4 +89,4 @@ paths:
           content:
             application/json:
               example:
-                "cart": [{"id": 1, "quantity": 1}]
+                "cart": [{ "id": 1, "quantity": 1 }]
