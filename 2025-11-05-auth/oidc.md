@@ -40,3 +40,26 @@ OIDCのフローは、OAuth 2.0のフローをベースにしています。最�
 
 7.  **リソースへのアクセス（任意）**:
     - クライアントは、必要に応じて、取得したアクセストークンを使ってUserInfoエンドポイントやその他のリソースサーバにアクセスし、追加のユーザー情報を取得します。
+
+```mermaid
+sequenceDiagram
+    participant User as リソースオーナー
+    participant Client as クライアント
+    participant OP as OpenID Provider
+
+    User->>Client: 1. ログインを開始
+    Client->>User: 2. 認証リクエスト (scope=openidを含めてリダイレクト)
+    User->>OP: 3. 認証リクエスト
+    OP->>User: 4. ログイン & 同意を要求
+    User->>OP: 5. ログイン & 同意
+    OP->>User: 6. 認可コードを付与してリダイレクト
+    User->>Client: 7. 認可コードを渡す
+
+    Client->>OP: 8. 認可コード、Secret情報等を送信
+    OP->>Client: 9. IDトークンとアクセストークンを発行
+
+    Client->>Client: 10. IDトークンを検証し、ユーザーを認証
+
+    Client->>OP: 11. アクセストークンを使いUserInfoエンドポイントにリクエスト
+    OP->>Client: 12. ユーザー情報を返却
+```
