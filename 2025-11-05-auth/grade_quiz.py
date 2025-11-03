@@ -15,28 +15,28 @@ def get_display_width(text: str) -> int:
             width += 1
     return width
 
+def extract_answers(dir: str, filename: str, pattern: str) -> list[str]:
+    path = os.path.join(dir, filename)
+    with open(path, 'r', encoding='utf-8') as f:
+        content = f.read()
+
+    answers = re.findall(pattern, content)
+    return answers
+
+
 def grade_quizzes(answer_dir: str, quiz_dir: str, show_answers: bool = False):
     print("--- Quiz Grading Results ---")
 
     for filename in sorted(os.listdir(quiz_dir)):
-        quiz_path = os.path.join(quiz_dir, filename)
-        answer_path = os.path.join(answer_dir, filename)
-
-        with open(quiz_path, 'r', encoding='utf-8') as f_quiz:
-            quiz_content = f_quiz.read()
-        with open(answer_path, 'r', encoding='utf-8') as f_answer:
-            answer_content = f_answer.read()
-
-        correct_answers = re.findall(r'\{([^}]+)\}', answer_content)
-        user_answers = re.findall(r'\[([^\]]+)\]', quiz_content)
+        correct_answers = extract_answers(answer_dir, filename, r'\{([^}]+)\}')
+        user_answers = extract_answers(quiz_dir, filename, r'\[([^\]]+)\]')
 
         score = 0
         details = []
         for i, (correct, user) in enumerate(zip(correct_answers, user_answers)):
-            is_correct = correct == user
-            score += is_correct
+            score += (correct == user)
+            mark = "〇" if (correct == user) else "✕"
 
-            mark = "〇" if is_correct else "✕"
             TARGET_WIDTH = 25
             padding_width = TARGET_WIDTH - get_display_width(correct)
             if padding_width < 0:
